@@ -118,6 +118,18 @@ async function run() {
       res.send(result);
     });
 
+    //Country data
+    const countriesCollection = client
+    .db("tourManageMentDb")
+    .collection("countries");
+
+
+    app.get("/countries", async (req, res) => {
+      const cursor = countriesCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
