@@ -120,15 +120,37 @@ async function run() {
 
     //Country data
     const countriesCollection = client
-    .db("tourManageMentDb")
-    .collection("countries");
-
+      .db("tourManageMentDb")
+      .collection("countries");
 
     app.get("/countries", async (req, res) => {
       const cursor = countriesCollection.find({});
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    const countriesSpotCollection = client
+      .db("tourManageMentDb")
+      .collection("allCountriesSpot");
+
+    app.get("/countryAllSpot/:countryName", async (req, res) => {
+      const countryName = req.params.countryName;
+      console.log(countryName);
+      const query = { country: countryName };
+      const cursor = countriesSpotCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/countrySpot/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await countriesSpotCollection.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
+
 
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
